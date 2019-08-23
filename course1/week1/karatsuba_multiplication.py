@@ -61,10 +61,6 @@ def recursive_multiplication(x,y):
             x = pad(x, len(y)-n)
             n = len(x)
 
-        # if n%2 != 0:
-        #     half = int((n+1)/2)
-        # else:
-        #     half = int(n/2)
         half = ceil(n/2)
 
         # Procedure:
