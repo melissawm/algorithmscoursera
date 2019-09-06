@@ -109,7 +109,4 @@ if __name__ == "__main__":
 
     result = recursive_multiplication(pi, exp)
 
-    if result == "8539734222673567065463550869546574495034888535765114961879601127067743044893204848617875072216249073013374895871952806582723184":
-        print("Ok!")
-    else:
-        print("Error")
+    print("Result = {}".format(result))
