@@ -45,21 +45,29 @@ char * string_operate(char * s, char * r, char op) {
     int lens = strlen(s);
     int lenr = strlen(r);
     int carry = 0;
-    int i, partialvalue, imax;
+    int i, imax;
+    int partialvalue;
 
     char * result = (char*)malloc(lens + lenr + 1);//new string with enough space for both and \0
-    char * partial = (char*)malloc(lens + lenr + 1);//new string with enough space for both and \0
+    //char * partial = (char*)malloc(lens + lenr + 1);//new string with enough space for both and \0
+    printf("s = %s\n", s);
 
     if (lens > lenr) {
         // Pad r with zeros to the left
         strcpy(result, r);
         string_pad(result, lens-lenr, 'L');
         printf("result after padding: %s\n", result);
-    } else if (lens < lenr) {
-        // Pad s with zeros to the left
-        strcpy(result, s);
-        string_pad(result, lenr-lens, 'L');
+        strcpy(r, result);
+//    } else if (lens < lenr) {
+//        // Pad s with zeros to the left
+//        strcpy(result, s);
+//        string_pad(result, lenr-lens, 'L');
+//        printf("result after padding: %s\n", result);
+//        strcpy(s, result);
     }
+    printf("After padding:\n");
+    printf("s = %s\n", s);
+    printf("r = %s\n", r);
 
     if (op == 'A') {
         // we are adding the two strings
@@ -74,14 +82,23 @@ char * string_operate(char * s, char * r, char op) {
 
         for (i=imax-1; i>=0; i--) {
             //partial = str(int(s[i])+int(r[i]) + carry);
-            partialvalue = strtol(&s[i], NULL, 10) + strtol(&r[i], NULL, 10) + carry;
-            sprintf(partial, "%d", partialvalue);
             printf("i = %d\n", i);
-            printf("partial = %d\n", partial);
-            //if len(partial) == 2:
-            //    carry = int(partial[0])
-            //else:
-            //    carry = 0
+            printf("r[%d] = %d\n", i, r[i]);
+            printf("s[%d] = %d\n", i, s[i]);
+            partialvalue = 0;
+            if (s[i] != '0') {
+                partialvalue = s[i]-'0';
+            }
+            if (r[i] != '0') {
+                partialvalue = partialvalue + r[i]-'0';
+            }
+            partialvalue = partialvalue + carry;
+            printf("partialvalue = %d\n", partialvalue);
+            if (partialvalue > 9) {
+                carry = 1;
+            } else {
+                carry = 0;
+            }
             //result = partial[-1] + result
         }
 //    } else if (op == 'S') {
@@ -112,7 +129,8 @@ char * string_operate(char * s, char * r, char op) {
 char * string_pad(char *result, int n, char side) {
     int i;
     char zeros[n];
-    char temp[strlen(result)];
+    char temp[sizeof(result)+n+1];
+    //char * temp = (char*)malloc(sizeof(result)+n+1);
 
     printf("n = %d\n", n);
     for (i=0; i<n; i++) {
@@ -129,3 +147,6 @@ char * string_pad(char *result, int n, char side) {
     }
     return result;
 }
+
+// Notes
+// https://www.geeksforgeeks.org/why-strcpy-and-strncpy-are-not-safe-to-use/
